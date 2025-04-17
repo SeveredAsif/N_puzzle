@@ -48,18 +48,18 @@ def linear_conflict(node,n):
     rows = []
     for i in range(n):
         rows.append(node.initial_config[i*3:(i+1)*3])
-    print("rows: ")
+    #print("rows: ")
     print(rows)
     
     for i,row in enumerate(rows):
-        print(f"row no.: {i} here: ")
+        #print(f"row no.: {i} here: ")
         print(row)
         for j in range(len(row)):
             for k in range(j+1,len(row)):
-                print(f"row items:  { row[j] } and {row[k]}")
+                #print(f"row items:  { row[j] } and {row[k]}")
                 print(f"{ceildiv(row[j],n)-1} {ceildiv(row[k],n)-1} {i}")
                 if (i==ceildiv(row[j],n)-1 and i==ceildiv(row[k],n)-1 and row[j]>row[k] and row[j]!=0 and row[k]!=0):
-                    print(f"{row[j]},{ row[k] }  row conflict" )
+                    #print(f"{row[j]},{ row[k] }  row conflict" )
                     row_conflict += 1
 
     #columns
@@ -69,8 +69,9 @@ def linear_conflict(node,n):
         for j in range(len(cols)):
             for k in range(j+1,len(cols)):
                 if ((col[j]-1)%n==i and (col[k]-1)%n==i and col[j]>col[k] and col[j]!=0 and col[k]!=0):
-                    print(f"{col[j]}  ,  {col[k]}  column conflict" )
+                    #print(f"{col[j]}  ,  {col[k]}  column conflict" )
                     col_conflict += 1
+    return row_conflict + col_conflict + manhattan_distance(node,n)
 
 # arr = [4,2,3,1,5,6,7,8,0]
 # node = Node(arr)
