@@ -10,6 +10,8 @@ class Node:
         self.moves = 0
         self.parent = None
         self.priority = 0 + manhattan_distance(self,3)
+    def __lt__(self, other):
+        return self.priority < other.priority
 
 def hamming_distance(node,n):
     distance = 0
