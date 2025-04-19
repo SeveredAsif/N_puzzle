@@ -1,5 +1,7 @@
 import math
 import numpy as np # type: ignore
+from node import *
+import heapq
 
 def ceildiv(a, b):
     return -(a // -b)
@@ -108,3 +110,38 @@ def print_node(node,n):
     print(arr)
     print()
     print()
+
+def isArrayEqual(a,b):
+    arr1 = np.array(a)
+    arr2 = np.array(b)
+    return np.all(arr1==arr2)
+
+
+def isInClosedList(a,b):
+    for items in b:
+        if(isArrayEqual(a,items.initial_config)):
+            return True
+    return False
+
+def insertNewMove(child_node,f,explored,h,possible_node,n):
+    moves = child_node.moves + 1
+    new_node = Node(possible_node)
+    new_node.moves = moves
+    new_node.parent = child_node
+    new_node.priority = moves + f(new_node,n)
+    explored.append(new_node)
+    heapq.heappush(h,(new_node.priority,new_node))
+
+
+def unsolvableLogic(node,n):
+    inversions= find_inversions(node)
+    if (n%2!=0 and inversions%2 != 0):
+        return False
+    row,col,zero_pos = find_zero(node,n)
+    col_from_bottom = n - col
+    if(n%2 == 0 and inversions%2 == 0): 
+        if(col_from_bottom%2==0):
+            return False
+    if(n%2== 0 and inversions%2!=0):
+        if(col_from_bottom%2!=0):
+            return False

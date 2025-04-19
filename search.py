@@ -4,17 +4,8 @@ import heapq
 
 
 def A_star_search(node,n,f):
-    inversions= find_inversions(node)
-    if (n%2!=0 and inversions%2 != 0):
+    if (unsolvableLogic(node,n))==False:
         return False
-    row,col,zero_pos = find_zero(node,n)
-    col_from_bottom = n - col
-    if(n%2 == 0 and inversions%2 == 0): 
-        if(col_from_bottom%2==0):
-            return False
-    if(n%2== 0 and inversions%2!=0):
-        if(col_from_bottom%2!=0):
-            return False
 
     intended = [1,2,3,4,5,6,7,8,0]
     h=[]
@@ -22,7 +13,6 @@ def A_star_search(node,n,f):
     expanded= []
     heapq.heapify(h)
     heapq.heappush(h,(node.priority,(node)))
-    explored.append(node)
     while (len(h)):
         child_node = heapq.heappop(h)[1]
         if(np.array_equal(intended,child_node.initial_config)):
@@ -40,19 +30,17 @@ def A_star_search(node,n,f):
         expanded.append(child_node)
         possible_nodes  = find_moves(child_node,n)
         for possible_node in possible_nodes:
-            moves = child_node.moves + 1
-            new_node = Node(possible_node)
-            new_node.moves = moves
-            new_node.parent = child_node
-            new_node.priority = moves + f(new_node,n)
-            explored.append(new_node)
-            heapq.heappush(h,(new_node.priority,new_node))
+            if(isInClosedList(possible_node,expanded)!=True):
+                insertNewMove(child_node,f,explored,h,possible_node,n)
 
-
-node = Node([1,2,3,0,4,6,7,5,8])
+#7,3,2,4,5,8,1,6,0
+#0,1,3,4,2,5,7,8,6
+#1,2,3,0,4,6,7,5,8
+node = Node([7,3,2,4,5,8,1,6,0])
 
 
 value = A_star_search(node,3,linear_conflict)
+
 if value==False:
     print("Unsolvable puzzle")
     
