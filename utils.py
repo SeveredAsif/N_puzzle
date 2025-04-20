@@ -6,10 +6,24 @@ import heapq
 def ceildiv(a, b):
     return -(a // -b)
 
-def hamming_distance(node,n):
+# def hamming_distance(node,n):
+#     distance = 0
+#     for i in range(n*n):
+#         if node.initial_config[i]!= i+1 and node.initial_config[i]!=0:
+#             distance += 1
+#     return distance
+def hamming_distance(node, n):
     distance = 0
-    for i in range(n*n):
-        if node.initial_config[i]!= i+1:
+    size = n * n
+    for i in range(size):
+        value = node.initial_config[i]
+        if value == 0:
+            continue  # Skip the blank tile
+        if i != size - 1:
+            if value != i + 1:
+                distance += 1
+        else:
+            # Last position should be 0, which is skipped, so any non-zero here is wrong
             distance += 1
     return distance
 
@@ -112,14 +126,20 @@ def print_node(node,n):
     print()
 
 def isArrayEqual(a,b):
-    arr1 = np.array(a)
-    arr2 = np.array(b)
-    return np.all(arr1==arr2)
+    # arr1 = np.array(a)
+    # arr2 = np.array(b)
+    # return np.all(arr1==arr2)
+    return tuple(a) == tuple(b)
 
 
 def isInClosedList(a,b):
-    for items in b:
-        if(isArrayEqual(a,items.initial_config)):
+    # for items in b:
+    #     if(isArrayEqual(a,items.initial_config)):
+    #         return True
+    # return False
+    t = tuple(a)
+    for node in b:
+        if tuple(node.initial_config) == t:
             return True
     return False
 
@@ -128,9 +148,13 @@ def insertNewMove(child_node,f,explored,h,possible_node,n):
     new_node = Node(possible_node)
     new_node.moves = moves
     new_node.parent = child_node
-    new_node.priority = moves + f(new_node,n)
+    heu =  f(new_node,n)
+    new_node.priority = moves + heu
+    new_node.h = heu
     explored.append(new_node)
     heapq.heappush(h,(new_node.priority,new_node))
+
+
 
 
 def unsolvableLogic(node,n):
@@ -145,3 +169,4 @@ def unsolvableLogic(node,n):
     if(n%2== 0 and inversions%2!=0):
         if(col_from_bottom%2!=0):
             return False
+    return True

@@ -28,6 +28,7 @@ def A_star_search(node,n,f):
                 print_node(nodes,n)
             return True
         expanded.append(child_node)
+        print(f"length: {len(expanded)}")
         possible_nodes  = find_moves(child_node,n)
         for possible_node in possible_nodes:
             if(isInClosedList(possible_node,expanded)!=True):
@@ -36,10 +37,11 @@ def A_star_search(node,n,f):
 #7,3,2,4,5,8,1,6,0
 #0,1,3,4,2,5,7,8,6
 #1,2,3,0,4,6,7,5,8
-node = Node([7,3,2,4,5,8,1,6,0])
+#1,5,0,7,6,4,2,3,8
+node = Node([1,5,0,7,6,4,2,3,8])
 
 
-value = A_star_search(node,3,linear_conflict)
+value = A_star_search(node,3,hamming_distance)
 
 if value==False:
     print("Unsolvable puzzle")
