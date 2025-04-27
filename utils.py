@@ -155,18 +155,27 @@ def insertNewMove(child_node,f,explored,h,possible_node,n):
     heapq.heappush(h,(new_node.priority,new_node))
 
 
-
+# def unsolvableLogic(node, n):
+#     inv = find_inversions(node)
+#     # Odd grid: solvable iff inversions even
+#     if n % 2 != 0:
+#         return (inv % 2 == 0)
+#     # Even grid: use blank row from bottom (1-based)
+#     row, _, _ = find_zero(node, n)
+#     row_from_bottom = n - row
+#     # Puzzle is solvable if inversions+row_from_bottom is odd
+#     return ((inv + row_from_bottom) % 2) == 1
 
 def unsolvableLogic(node,n):
     inversions= find_inversions(node)
     if (n%2!=0 and inversions%2 != 0):
         return False
     row,col,zero_pos = find_zero(node,n)
-    col_from_bottom = n - col
+    row_from_bottom = n - row
     if(n%2 == 0 and inversions%2 == 0): 
-        if(col_from_bottom%2==0):
+        if(row_from_bottom%2==0):
             return False
     if(n%2== 0 and inversions%2!=0):
-        if(col_from_bottom%2!=0):
+        if(row_from_bottom%2!=0):
             return False
     return True

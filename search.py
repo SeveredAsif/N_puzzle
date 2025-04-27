@@ -7,7 +7,8 @@ def A_star_search(node,n,f):
     if (unsolvableLogic(node,n))==False:
         return False
 
-    intended = [1,2,3,4,5,6,7,8,0]
+    intended = list(range(1, n*n)) + [0]
+    #print(intended)
     h=[]
     explored = []
     expanded= []
@@ -28,21 +29,22 @@ def A_star_search(node,n,f):
                 print_node(nodes,n)
             return True
         expanded.append(child_node)
-        print(f"length: {len(expanded)}")
+        #print(f"length: {len(expanded)}")
         possible_nodes  = find_moves(child_node,n)
         for possible_node in possible_nodes:
             if(isInClosedList(possible_node,expanded)!=True):
                 insertNewMove(child_node,f,explored,h,possible_node,n)
 
 #7,3,2,4,5,8,1,6,0
-#0,1,3,4,2,5,7,8,6
-#1,2,3,0,4,6,7,5,8
-#1,5,0,7,6,4,2,3,8
-node = Node([1,5,0,7,6,4,2,3,8])
+#0,1,3,4,2,5,7,8,6 --spec1st
+#1,2,3,0,4,6,7,5,8 -- spec2nd
+#1,5,0,7,6,4,2,3,8 --22 moves
+#1,2,3,4,5,6,8,7,0 --spec 3rd - unsolvable
+# node = Node([1,2,3,4,5,6,8,7,0])
 
 
-value = A_star_search(node,3,hamming_distance)
+# value = A_star_search(node,3,hamming_distance)
 
-if value==False:
-    print("Unsolvable puzzle")
+# if value==False:
+#     print("Unsolvable puzzle")
     
